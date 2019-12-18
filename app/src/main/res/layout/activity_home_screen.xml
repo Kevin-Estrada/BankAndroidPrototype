@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:weightSum="5"
+    tools:context=".HomeScreen">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2">
+
+        <TextView
+            android:id="@+id/display"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display3"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:hint="0.00"
+            android:inputType="numberDecimal" />
+        <TextView
+            android:id="@+id/dollarSign"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/display"
+            android:layout_centerInParent="true"
+            android:text="$"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display3"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <EditText
+        android:id="@+id/deposit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/depositText"
+        android:hint="Enter Amount to Deposit"
+        android:inputType="numberDecimal" />
+
+        <TextView
+            android:id="@+id/depositText"
+            android:text="Deposit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:layout_alignParentTop="true"
+            android:gravity="center"
+            android:inputType="text" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <EditText
+        android:id="@+id/withdraw"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/withdrawText"
+        android:layout_centerHorizontal="true"
+        android:hint="Enter Amount to Withdraw"
+        android:inputType="numberDecimal" />
+
+        <TextView
+            android:id="@+id/withdrawText"
+            android:text="Withdraw"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:layout_alignParentTop="true"
+            android:gravity="center"
+            android:inputType="text" />
+
+    </RelativeLayout>
+
+        <Button
+            android:id="@+id/confirmAmount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/withdraw"
+            android:layout_centerHorizontal="true"
+            android:text="Confirm Amount" />
+
+    <Button
+        android:id="@+id/logOut"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/confirmAmount"
+        android:layout_centerHorizontal="true"
+        android:text="Log Out" />
+
+</LinearLayout>

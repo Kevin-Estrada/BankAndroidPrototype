@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "127698397567",
-    "firebase_url": "https://bankprototype2.firebaseio.com",
-    "project_id": "bankprototype2",
-    "storage_bucket": "bankprototype2.appspot.com"
+    "project_number": "195970283362",
+    "firebase_url": "https://bank-prototype2.firebaseio.com",
+    "project_id": "bank-prototype2",
+    "storage_bucket": "bank-prototype2.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:127698397567:android:de8b34317fcca176dfd24a",
+        "mobilesdk_app_id": "1:195970283362:android:0125f012e93b3553711e3b",
         "android_client_info": {
           "package_name": "com.example.bankprototype2"
         }
       },
       "oauth_client": [
         {
-          "client_id": "127698397567-q65g1gve109c4mme03lt3l34g7m1qq1q.apps.googleusercontent.com",
+          "client_id": "195970283362-le0i6e8nkqmf29k18mrt613883devfu8.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.example.bankprototype2",
@@ -23,20 +23,20 @@
           }
         },
         {
-          "client_id": "127698397567-971gscu9rgmel2e23815m8t33n04ijqt.apps.googleusercontent.com",
+          "client_id": "195970283362-8v3q04recd95jn13ei2rg6hf6tfgcofk.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyB6XbeHiWh-HPD210H74ag1F04-d9IWVhE"
+          "current_key": "AIzaSyBfeBnmPz4jcNPAcySZ_6JXptWkMqUO30Q"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "127698397567-971gscu9rgmel2e23815m8t33n04ijqt.apps.googleusercontent.com",
+              "client_id": "195970283362-8v3q04recd95jn13ei2rg6hf6tfgcofk.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

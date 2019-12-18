@@ -21,8 +21,6 @@
         android:padding="20dp"
         android:layout_weight="3">
 
-
-
     <EditText
         android:id="@+id/email"
         android:layout_width="match_parent"
@@ -38,7 +36,6 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/email"
         android:layout_centerHorizontal="true"
-        android:ems="10"
         android:hint="Password"
         android:inputType="textPassword" />
 
