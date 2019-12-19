@@ -5,99 +5,112 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:weightSum="5"
+    android:background="@drawable/green_background"
     tools:context=".HomeScreen">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="2">
+        android:layout_weight="1"
+        android:padding="20dp">
+
+        <TextView
+            android:id="@+id/total_balance_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Total Balance is:"
+            android:layout_centerInParent="true"
+            android:textColor="#FFFFFF"
+            android:textSize="40dp"/>
 
         <TextView
             android:id="@+id/display"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display3"
+            android:textSize="50dp"
             android:layout_centerInParent="true"
-            android:gravity="center"
+            android:layout_below="@id/total_balance_text"
             android:hint="0.00"
+            android:textColorHint="#000000"
             android:inputType="numberDecimal" />
         <TextView
             android:id="@+id/dollarSign"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@id/total_balance_text"
             android:layout_toLeftOf="@id/display"
             android:layout_centerInParent="true"
             android:text="$"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display3"/>
+            android:textColor="#000000"
+            android:textSize="50dp"/>
 
     </RelativeLayout>
+
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1">
-
-        <EditText
-        android:id="@+id/deposit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/depositText"
-        android:hint="Enter Amount to Deposit"
-        android:inputType="numberDecimal" />
+        android:layout_weight="1"
+        android:padding="20dp">
 
         <TextView
             android:id="@+id/depositText"
             android:text="Deposit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+            android:textSize="30dp"
+            android:textColor="#000000"
+            android:textAlignment="center"
             android:layout_alignParentTop="true"
-            android:gravity="center"
             android:inputType="text" />
 
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1">
-
         <EditText
-        android:id="@+id/withdraw"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/withdrawText"
-        android:layout_centerHorizontal="true"
-        android:hint="Enter Amount to Withdraw"
-        android:inputType="numberDecimal" />
+            android:id="@+id/deposit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/depositText"
+            android:hint="Enter Amount to Deposit"
+            android:inputType="numberDecimal" />
 
         <TextView
             android:id="@+id/withdrawText"
             android:text="Withdraw"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-            android:layout_alignParentTop="true"
-            android:gravity="center"
+            android:textSize="30dp"
+            android:textColor="#000000"
+            android:textAlignment="center"
+            android:layout_above="@id/withdraw"
             android:inputType="text" />
+
+        <EditText
+            android:id="@+id/withdraw"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:hint="Enter Amount to Withdraw"
+            android:inputType="numberDecimal" />
 
     </RelativeLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="20dp">
         <Button
             android:id="@+id/confirmAmount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/withdraw"
-            android:layout_centerHorizontal="true"
+            android:layout_alignParentTop="true"
             android:text="Confirm Amount" />
 
-    <Button
-        android:id="@+id/logOut"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/confirmAmount"
-        android:layout_centerHorizontal="true"
-        android:text="Log Out" />
+        <Button
+            android:id="@+id/logOut"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/confirmAmount"
+            android:text="Log Out" />
+    </RelativeLayout>
 
 </LinearLayout>

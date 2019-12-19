@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private EditText emailText;
     private Button signInButton;
     private Button signUpButton;
+    private ProgressBar progressBar;
     private FirebaseAuth mAuth;
 
     @Override
@@ -39,15 +41,16 @@ public class MainActivity extends AppCompatActivity {
         emailText = findViewById(R.id.email);
         signInButton = findViewById(R.id.signInButton);
         signUpButton = findViewById(R.id.signUpButton);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(emailText.length() == 0) {
-                    emailText.setError("Enter Email");
+                    emailText.setError("Enter Existing Email");
                 }
                 else if(passwordText.length() == 0) {
-                    passwordText.setError("Enter Password");
+                    passwordText.setError("Enter Existing Password");
                 } else {
                     signIn();
                 }
@@ -57,7 +60,8 @@ public class MainActivity extends AppCompatActivity {
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                signUp();
+                Intent signupactivity = new Intent(getBaseContext(), SignUp.class);
+                startActivity(signupactivity);
             }
         });
 
@@ -74,6 +78,8 @@ public class MainActivity extends AppCompatActivity {
 
     }
     private void signIn(){
+
+        progressBar.setVisibility(View.VISIBLE);
         String pass = passwordText.getText().toString();
         String email = emailText.getText().toString();
         Log.d(TAG, "signIn:  " + pass + " " + email);
@@ -82,7 +88,9 @@ public class MainActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        progressBar.setVisibility(View.GONE);
                         if (task.isSuccessful()) {
+                            Toast.makeText(getApplicationContext(),"Sign in Succesful!",Toast.LENGTH_LONG).show();
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
@@ -101,38 +109,5 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
     }
-
-    private void signUp(){
-        String pass = passwordText.getText().toString();
-        String email = emailText.getText().toString();
-        Intent signupactivity = new Intent(getBaseContext(), SignUp.class);
-        startActivity(signupactivity);
-
-        mAuth.createUserWithEmailAndPassword(email, pass)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "createUserWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            Toast.makeText(getApplicationContext(),"Authentication Successful",Toast.LENGTH_LONG).show();
-
-
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(getApplicationContext(),"Authentication Failed",Toast.LENGTH_LONG).show();
-
-
-                        }
-
-                        // ...
-                    }
-                });
-
-    }
-
-
 
 }
