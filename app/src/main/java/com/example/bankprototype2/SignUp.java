@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -34,8 +35,9 @@ public class SignUp extends AppCompatActivity {
     private EditText confirmPassText;
     private Button registerAccount;
     private FirebaseAuth mAuth;
+    private ProgressBar progressBar;
 
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private DocumentReference DocRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,44 +52,48 @@ public class SignUp extends AppCompatActivity {
         passwordText = findViewById(R.id.passsignup);
         confirmPassText = findViewById(R.id.confirmpass);
         registerAccount = findViewById(R.id.registeruser);
+        progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
         registerAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(firtNameText.length() == 0 || firtNameText.length() < 2){
+                if (firtNameText.length() == 0 || firtNameText.length() < 2) {
                     firtNameText.setError("Enter at least 3 characters.");
-                } else if(lastNameText.length() == 0 || lastNameText.length()< 2){
+                } else if (lastNameText.length() == 0 || lastNameText.length() < 2) {
                     lastNameText.setError("Enter at least 3 characters.");
-                } else if(emailText.length() == 0){
+                } else if (emailText.length() == 0) {
                     emailText.setError("Enter a valid email.");
-                } else if(passwordText.length() == 0 || passwordText.length() < 5){
+                } else if (passwordText.length() == 0 || passwordText.length() < 5) {
                     passwordText.setError("Enter at least a 6 character password.");
-                } else if(!(confirmPassText.getText().toString().contentEquals(passwordText.getText()))){
+                } else if (!(confirmPassText.getText().toString().contentEquals(passwordText.getText()))) {
                     confirmPassText.setError("Passwords do not match.");
                 } else {
                     registerNewUser();
+                    saveUserData();
                 }
             }
         });
     }
-    private void registerNewUser(){
 
+    private void registerNewUser() {
+
+        progressBar.setVisibility(View.VISIBLE);
         String pass = passwordText.getText().toString();
         String email = emailText.getText().toString();
         mAuth.createUserWithEmailAndPassword(email, pass)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        progressBar.setVisibility(View.GONE);
                         if (task.isSuccessful()) {
-                            Toast.makeText(getApplicationContext(),"Sign up Succesful!",Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Sign up Succesful!", Toast.LENGTH_LONG).show();
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            saveUserData();
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
-                            Toast.makeText(getApplicationContext(),"Sign up failed. Try Again.",Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Sign up failed. Try Again.", Toast.LENGTH_LONG).show();
                         }
 
                         // ...
@@ -108,20 +114,23 @@ public class SignUp extends AppCompatActivity {
         user.put("First Name", firstName);
         user.put("Last Name", lastName);
         user.put("Email Address", email);
-        user.put("Password",password);
-        user.put("Balance",balance);
+        user.put("Password", password);
+        user.put("Balance", balance);
 
-        db.collection("Users").document(firstName)
-                .set(user)
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
+        DocRef = FirebaseFirestore.getInstance().collection("users").document(firstName);
+        DocRef.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if (task.isSuccessful()){
-                            Log.d("User Register", "Document has been saved!");
-                        } else {
-                            Log.w("User Register","Document was not saved !",task.getException());
-                        }
+                    public void onSuccess(Void aVoid) {
+
+                        Log.d(TAG, "DocumentSnapshot added with ID: " + DocRef.getId());
+
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.w(TAG, "Error adding document", e);
                     }
                 });
-                    }
     }
+}

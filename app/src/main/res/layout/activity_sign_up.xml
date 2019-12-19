@@ -78,6 +78,14 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/confirmpass"
             android:text="Register Account" />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/registeruser"
+            android:layout_centerInParent="true"
+            android:visibility="gone"/>
     </RelativeLayout>
 
 </LinearLayout>
