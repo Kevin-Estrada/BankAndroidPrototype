@@ -19,7 +19,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class MainActivity extends AppCompatActivity {
-
+    // Declaring needed variables for program
     public static String TAG = "DEBUG";
     private EditText passwordText;
     private EditText emailText;
@@ -28,19 +28,24 @@ public class MainActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private FirebaseAuth mAuth;
 
+    // onCreate begins the activity with all associated XML files.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Create an instance to use Firebase authentication
         mAuth = FirebaseAuth.getInstance();
 
+        //Find Ids of objects within the associated XML file.
         passwordText = findViewById(R.id.password);
         emailText = findViewById(R.id.email);
         signInButton = findViewById(R.id.signInButton);
         signUpButton = findViewById(R.id.signUpButton);
         progressBar = findViewById(R.id.progressBar);
 
+        // If sign in button is clicked, then these actions will be performed and
+        // else statement runs the signIn method
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //If Sign up button is clicked, then the new activity "SignUp" will run, redirecting user to
+        // new page
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    //This is to make sure to sign out user from account start from the start up of the app.
     @Override
     public void onStart() {
         super.onStart();
@@ -75,6 +83,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
+    // This method provides the necessary functions for user authentication through Firebase.
+    // It will check if user email and password exists from it's creation from the SignUp activity.
+    //If user email and password does exist, then the app will redirect user to the HomeScreen Activity.
     private void signIn(){
 
         progressBar.setVisibility(View.VISIBLE);
