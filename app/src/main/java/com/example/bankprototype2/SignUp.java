@@ -37,7 +37,7 @@ public class SignUp extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private ProgressBar progressBar;
 
-    private DocumentReference DocRef;
+    FirebaseFirestore dataBase = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,7 +108,8 @@ public class SignUp extends AppCompatActivity {
         String lastName = lastNameText.getText().toString();
         String email = emailText.getText().toString();
         String password = passwordText.getText().toString();
-        double balance = 0;
+        double balanceNum = 0;
+        String balance = Double.toString(balanceNum);
 
         Map<String, Object> user = new HashMap<>();
         user.put("First Name", firstName);
@@ -117,19 +118,18 @@ public class SignUp extends AppCompatActivity {
         user.put("Password", password);
         user.put("Balance", balance);
 
-        DocRef = FirebaseFirestore.getInstance().collection("users").document(firstName);
-        DocRef.set(user).addOnSuccessListener(new OnSuccessListener<Void>() {
+        dataBase.collection("users").document()
+                .set(user)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-
-                        Log.d(TAG, "DocumentSnapshot added with ID: " + DocRef.getId());
-
+                        Log.d("Success Message","DocumentSnapshot added with ID:");
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error adding document", e);
+                        Log.w("Error Message", "Error adding document",e);
                     }
                 });
     }
