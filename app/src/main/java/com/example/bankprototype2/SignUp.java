@@ -3,7 +3,6 @@ package com.example.bankprototype2;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -19,7 +18,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
@@ -27,7 +25,6 @@ import java.util.Map;
 
 public class SignUp extends AppCompatActivity {
 
-    public static String TAG = "Reminder";
     private EditText firtNameText;
     private EditText lastNameText;
     private EditText emailText;
@@ -37,13 +34,14 @@ public class SignUp extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private ProgressBar progressBar;
 
-    FirebaseFirestore dataBase = FirebaseFirestore.getInstance();
+    FirebaseFirestore dataBase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
 
+        dataBase = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
 
         firtNameText = findViewById(R.id.firstname);
@@ -52,7 +50,7 @@ public class SignUp extends AppCompatActivity {
         passwordText = findViewById(R.id.passsignup);
         confirmPassText = findViewById(R.id.confirmpass);
         registerAccount = findViewById(R.id.registeruser);
-        progressBar = (ProgressBar) findViewById(R.id.progressBar);
+        progressBar = findViewById(R.id.progressBar);
 
         registerAccount.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,7 +67,6 @@ public class SignUp extends AppCompatActivity {
                     confirmPassText.setError("Passwords do not match.");
                 } else {
                     registerNewUser();
-                    saveUserData();
                 }
             }
         });
@@ -88,11 +85,12 @@ public class SignUp extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             Toast.makeText(getApplicationContext(), "Sign up Succesful!", Toast.LENGTH_LONG).show();
                             // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "createUserWithEmail:success");
+                            Log.d(MainActivity.TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            saveUserData(user);
                         } else {
                             // If sign in fails, display a message to the user.
-                            Log.w(TAG, "createUserWithEmail:failure", task.getException());
+                            Log.w(MainActivity.TAG, "createUserWithEmail:failure", task.getException());
                             Toast.makeText(getApplicationContext(), "Sign up failed. Try Again.", Toast.LENGTH_LONG).show();
                         }
 
@@ -103,33 +101,30 @@ public class SignUp extends AppCompatActivity {
 
     }
 
-    private void saveUserData() {
+    private void saveUserData(FirebaseUser user) {
         String firstName = firtNameText.getText().toString();
         String lastName = lastNameText.getText().toString();
-        String email = emailText.getText().toString();
-        String password = passwordText.getText().toString();
-        double balanceNum = 0;
-        String balance = Double.toString(balanceNum);
+        Double balance = 0.00;
+        String userID = user.getUid();
 
-        Map<String, Object> user = new HashMap<>();
-        user.put("First Name", firstName);
-        user.put("Last Name", lastName);
-        user.put("Email Address", email);
-        user.put("Password", password);
-        user.put("Balance", balance);
+        Map<String, Object> userData = new HashMap<>();
+        userData.put("First Name", firstName);
+        userData.put("Last Name", lastName);
+        userData.put("Balance", balance);
 
-        dataBase.collection("users").document()
-                .set(user)
+        dataBase.collection("users").document(userID)
+                .set(userData)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Log.d("Success Message","DocumentSnapshot added with ID:");
+                        Log.d(MainActivity.TAG,"DocumentSnapshot added with ID:");
+                        finish();
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.w("Error Message", "Error adding document",e);
+                        Log.w(MainActivity.TAG, "Error adding document",e);
                     }
                 });
     }

@@ -1,10 +1,7 @@
 package com.example.bankprototype2;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,21 +10,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.ListenerRegistration;
-import com.google.firebase.firestore.SetOptions;
 
 import java.text.DecimalFormat;
-import java.util.HashMap;
-import java.util.Map;
 
 public class HomeScreen extends AppCompatActivity {
 
@@ -37,21 +27,24 @@ public class HomeScreen extends AppCompatActivity {
     private EditText withdraw;
     private Button confirm_amount;
     private Button logOutButton;
-    private boolean clicked;
     private FirebaseAuth mAuth;
-    double sumResult;
     String firstName;
-    String userBalance;
+    double userBalance;
 
     private static DecimalFormat df2 = new DecimalFormat("#.##");
 
-    private FirebaseFirestore dataBase = FirebaseFirestore.getInstance();
-    private DocumentReference DocRef = dataBase.collection("users").document("IxTR9f5pdYvEyey91l18");
+    private FirebaseFirestore dataBase;
+    private DocumentReference DocRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_screen);
+
+
+        dataBase = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+        DocRef = dataBase.collection("users").document(mAuth.getCurrentUser().getUid());
 
         nameOfUser = findViewById(R.id.name_of_user);
         balance = findViewById(R.id.display);
@@ -81,7 +74,7 @@ public class HomeScreen extends AppCompatActivity {
         logOutButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                clicked = false;
+                mAuth.signOut();
                 endActivity();
             }
         });
@@ -101,39 +94,35 @@ public class HomeScreen extends AppCompatActivity {
                 }
                 if (documentSnapshot.exists()) {
                     firstName = documentSnapshot.getString("First Name");
-                    userBalance = documentSnapshot.getString("Balance");
+                    userBalance = documentSnapshot.getDouble("Balance");
                     nameOfUser.setText("Hello " + firstName);
-                    balance.setText(userBalance);
-                }
+                    balance.setText(String.format("%.2f",userBalance));                }
             }
         });
     }
 
 
     private void balanceUpdate(){
-            double depositInput = Double.parseDouble(deposit.getText().toString());
-            double withdrawInput = Double.parseDouble(withdraw.getText().toString());
-            double totalBalance = Double.parseDouble(userBalance);
 
+        double depositInput = Double.parseDouble(deposit.getText().toString());
+        double withdrawInput = Double.parseDouble(withdraw.getText().toString());
 
             double result = depositInput - withdrawInput;
 
-            totalBalance += result;
-
-            df2.format(totalBalance);
-
-            String s = (totalBalance + "");
-
-            userBalance = s;
+            userBalance += result;
 
             DocRef.update("Balance",userBalance);
-            balance.setText(userBalance);
+            balance.setText(String.format("%.2f",userBalance));
             }
 
     private void endActivity(){
+        finish();
+    }
 
-        Intent signout = new Intent(getBaseContext(), MainActivity.class);
-        startActivity(signout);
-        }
+    @Override
+    public void onBackPressed()
+    {
+    }
+
 
 }
